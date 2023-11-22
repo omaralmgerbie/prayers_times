@@ -6,31 +6,31 @@ import 'package:prayers_times/src/utils/constant.dart';
 /// required for calculating prayer times based on different methods and rules.
 class PrayerCalculationParameters {
   /// The calculation method name.
-  String? method;
+  final String method;
 
   /// The angle for Fajr (pre-dawn) prayer in degrees.
-  late double fajrAngle;
+  final double fajrAngle;
 
   /// The angle for Isha (nightfall) prayer in degrees.
-  late double ishaAngle;
+  final double ishaAngle;
 
   /// The interval between sunset and Isha prayer in minutes.
-  double? ishaInterval;
+  final double ishaInterval;
 
   /// The angle for Maghrib (sunset) prayer in degrees.
-  double? maghribAngle;
+  final double maghribAngle;
 
   /// The chosen madhab (school of thought) for the prayer time calculation.
-  String? madhab;
+  final String madhab;
 
   /// The rule for calculating high latitude prayer times.
-  String? highLatitudeRule;
+  final String highLatitudeRule;
 
   /// Adjustments for various prayer times.
-  late Map<String, double> adjustments;
+  final Map<String, double> adjustments;
 
   /// Method-specific adjustments for various prayer times.
-  late Map<String, double> methodAdjustments;
+  final Map<String, double> methodAdjustments;
 
   /// Creates a new `PrayerCalculationParameters` object with the specified parameters.
   ///
@@ -40,29 +40,23 @@ class PrayerCalculationParameters {
   ///   - ishaAngle: The angle for Isha (nightfall) prayer in degrees.
   ///   - ishaInterval: The interval between sunset and Isha prayer in minutes (optional).
   ///   - maghribAngle: The angle for Maghrib (sunset) prayer in degrees (optional).
-  PrayerCalculationParameters(String methodName, this.fajrAngle, this.ishaAngle,
-      {double? ishaInterval, this.maghribAngle}) {
-    method = methodName;
-    this.ishaInterval = ishaInterval ?? 0.0;
-    madhab = PrayerMadhab.hanafi;
-    highLatitudeRule = HighLatitudeRule.middleOfTheNight;
-    adjustments = {
-      'fajr': 0,
-      'sunrise': 0,
-      'dhuhr': 0,
-      'asr': 0,
-      'maghrib': 0,
-      'isha': 0
-    };
-    methodAdjustments = {
-      'fajr': 0,
-      'sunrise': 0,
-      'dhuhr': 0,
-      'asr': 0,
-      'maghrib': 0,
-      'isha': 0
-    };
-  }
+  PrayerCalculationParameters(
+    String methodName,
+    this.fajrAngle,
+    this.ishaAngle, {
+    String? madhab,
+    highLatitudeRule = HighLatitudeRule.middleOfTheNight,
+    double? ishaInterval,
+    double? maghribAngle,
+    Map<String, double>? adjustments,
+    Map<String, double>? methodAdjustments,
+  })  : maghribAngle = maghribAngle ?? 0.0,
+        method = methodName,
+        ishaInterval = ishaInterval ?? 0.0,
+        highLatitudeRule = HighLatitudeRule.middleOfTheNight,
+        madhab = PrayerMadhab.hanafi,
+        adjustments = adjustments ?? _defaultAdjustments,
+        methodAdjustments = methodAdjustments ?? _defaultAdjustments;
 
   /// Determines the portions of the night for Fajr and Isha prayers based on the chosen high latitude rule.
   ///
@@ -80,3 +74,12 @@ class PrayerCalculationParameters {
     }
   }
 }
+
+const Map<String, double> _defaultAdjustments = {
+  'fajr': 0,
+  'sunrise': 0,
+  'dhuhr': 0,
+  'asr': 0,
+  'maghrib': 0,
+  'isha': 0
+};

@@ -7,8 +7,8 @@ void main() {
   Coordinates coordinates = Coordinates(21.1959, 72.7933);
 
   // Specify the calculation parameters for prayer times
-  PrayerCalculationParameters params = PrayerCalculationMethod.karachi();
-  params.madhab = PrayerMadhab.hanafi;
+  PrayerCalculationParameters params =
+      PrayerCalculationMethod.karachi(madhab: PrayerMadhab.hanafi);
 
   // Create a PrayerTimes instance for the specified location
   PrayerTimes prayerTimes = PrayerTimes(

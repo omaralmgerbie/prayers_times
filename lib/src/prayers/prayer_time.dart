@@ -167,12 +167,11 @@ class PrayerTimes {
     }
 
     // Calculate Isha times based on interval and angle
-    if (calculationParameters.ishaInterval != null &&
-        calculationParameters.ishaInterval! > 0) {
+    if (calculationParameters.ishaInterval > 0) {
       ishaTime = CelestialTimeUtils.dateByAddingMinutes(
-          sunsetTime, calculationParameters.ishaInterval ?? 0);
+          sunsetTime, calculationParameters.ishaInterval);
       ishabeforeTime = CelestialTimeUtils.dateByAddingMinutes(
-          sunsetbeforeTime, calculationParameters.ishaInterval ?? 0);
+          sunsetbeforeTime, calculationParameters.ishaInterval);
     } else {
       ishaTime = PrayerTimeConverter(
               solarTime.hourAngle(-1 * calculationParameters.ishaAngle, true))
@@ -235,16 +234,14 @@ class PrayerTimes {
 
     // Calculate Maghrib time based on angle
     maghribTime = sunsetTime;
-    if (calculationParameters.maghribAngle != null) {
-      DateTime angleBasedMaghrib = PrayerTimeConverter(solarTime.hourAngle(
-              -1 * calculationParameters.maghribAngle!, true))
-          .utcDate(date.year, date.month, date.day);
-      if (sunsetTime.isBefore(angleBasedMaghrib) &&
-          ishaTime.isAfter(angleBasedMaghrib)) {
-        maghribTime = angleBasedMaghrib;
-      }
+    DateTime angleBasedMaghrib = PrayerTimeConverter(solarTime.hourAngle(
+            -1 * calculationParameters.maghribAngle, true))
+        .utcDate(date.year, date.month, date.day);
+    if (sunsetTime.isBefore(angleBasedMaghrib) &&
+        ishaTime.isAfter(angleBasedMaghrib)) {
+      maghribTime = angleBasedMaghrib;
     }
-
+  
     // Apply adjustments for each prayer time
     double fajrAdjustment = (calculationParameters.adjustments["fajr"] ?? 0) +
         (calculationParameters.methodAdjustments["fajr"] ?? 0);
